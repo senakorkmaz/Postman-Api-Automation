@@ -1,0 +1,25 @@
+name: Run Postman Tests with Newman
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  postman-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Install Newman
+      run: npm install -g newman
+
+    - name: Run Postman Collection
+      run: |
+        newman run collections/PostmanAutomationCollection.json \
+          --reporters cli,junit \
+          --reporter-junit-export results.xml
